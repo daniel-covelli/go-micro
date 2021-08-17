@@ -12,13 +12,17 @@ import (
 
 func main() {
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+
+	// create the handlers
 	hh := handlers.NewHello(l)
 	gh := handlers.NewGoodbye(l)
 
+	// create a new serve mux and register the handlers
 	sm := http.NewServeMux()
 	sm.Handle("/", hh)
 	sm.Handle("/goodbye", gh)
 
+	// create a new server
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      sm,
@@ -27,6 +31,7 @@ func main() {
 		WriteTimeout: 1 * time.Second,
 	}
 
+	// start the server
 	go func() {
 		err := s.ListenAndServe()
 		if err != nil {
@@ -34,10 +39,12 @@ func main() {
 		}
 	}()
 
+	// trap sigterm or interupt and gracefully shutdown the server
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt)
 	signal.Notify(sigChan, os.Kill)
 
+	// block until a signal is received
 	sig := <-sigChan
 	l.Println("Recieved Terminate, gracefuls shutdown", sig)
 
