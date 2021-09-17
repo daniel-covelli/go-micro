@@ -12,7 +12,7 @@ import (
 
 func main() {
 	// create a logger
-	l := log.New(os.Stdout, "product-api", log.LstdFlags)
+	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
 
 	// create the handlers
 	ph := handlers.NewProducts(l)
