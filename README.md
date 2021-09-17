@@ -1,4 +1,4 @@
-# go-micro
+# learn-go
 
 This is a test playground that I am using to learn how to build microservices in GO.
 
