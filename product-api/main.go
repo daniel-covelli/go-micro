@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+	// create a logger
 	l := log.New(os.Stdout, "product-api", log.LstdFlags)
 
 	// create the handlers
@@ -18,7 +19,9 @@ func main() {
 
 	// create a new serve mux and register the handlers
 	sm := http.NewServeMux()
-	sm.Handle("/", ph)
+
+	// register the handler
+	sm.Handle("/products", ph)
 
 	// create a new server
 	s := &http.Server{
@@ -31,6 +34,7 @@ func main() {
 
 	// start the server
 	go func() {
+		// listen on port and calls appropriate ServeHTTP
 		err := s.ListenAndServe()
 		if err != nil {
 			l.Fatal(err)
