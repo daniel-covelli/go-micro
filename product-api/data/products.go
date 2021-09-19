@@ -34,11 +34,7 @@ func UpdateProduct(id int, p *Product) error {
 	if err != nil {
 		return err
 	}
-	fmt.Printf("P ID BEFORE %v \n", p.ID)
 	p.ID = id
-	fmt.Printf("P ID AFTER %v \n", p.ID)
-
-	fmt.Printf("POS %v", pos)
 	productList[pos] = p
 
 	return nil

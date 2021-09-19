@@ -20,8 +20,6 @@ func NewProducts(l *log.Logger) *Products {
 
 // ServerHTTP is the entry point for the handler and satisfies the http.Handler interface
 func (p *Products) ServeHTTP(rw http.ResponseWriter, r *http.Request) {
-	// fmt.Printf("hi")
-	// p.l.Printf("PATH: %#v \n", r.URL.Path)
 
 	// handle the request for a list of products
 	if r.Method == http.MethodGet {

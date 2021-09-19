@@ -7,10 +7,10 @@ GET
 curl http://localhost:9090 | jq # ping server and display formatted json
 
 POST
-curl http://localhost:9090/products -d "{...}" | jq
+curl http://localhost:9090 -d "{...}" | jq
 
 PUT
-curl -v http://localhost:9090/products/1 -XPUT -d '{...}' | jq
+curl -v http://localhost:9090/1 -XPUT -d '{...}' | jq
 ```
 
 ## Content
