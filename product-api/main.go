@@ -11,6 +11,7 @@ import (
 )
 
 func main() {
+
 	// create a logger
 	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
 
@@ -21,7 +22,7 @@ func main() {
 	sm := http.NewServeMux()
 
 	// register the handler
-	sm.Handle("/products", ph)
+	sm.Handle("/products/", ph)
 
 	// create a new server
 	s := &http.Server{
