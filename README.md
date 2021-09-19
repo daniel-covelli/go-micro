@@ -3,13 +3,13 @@
 This is a playground for learning microservices in GO.
 
 ```shell
-GET
+# GET
 curl http://localhost:9090 | jq # ping server and display formatted json
 
-POST
+# POST
 curl http://localhost:9090 -d "{...}" | jq
 
-PUT
+# PUT
 curl -v http://localhost:9090/1 -XPUT -d '{...}' | jq
 ```
 
