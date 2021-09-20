@@ -13,26 +13,27 @@ import (
 )
 
 func main() {
-
-	// create a logger
+	// Create a new logger. Is responsible for logging events.
 	l := log.New(os.Stdout, "product-api ", log.LstdFlags)
 
-	// create the handlers
+	// Instantiate the handlers
 	ph := handlers.NewProducts(l)
 
-	// create a new serve mux and register the handlers
+	// Creates a new Router instance. Router registers
+	// routes to be matched and dispatches a handler.
 	sm := mux.NewRouter()
 
+	// Register a Get route and create its subrouter
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
+	// Register products subroute and its associated handler
 	getRouter.HandleFunc("/products", ph.GetProducts)
 
+	// Register a PUT route and create its subrouter
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
+	// Register a products/:id subroute and its associated handler
 	putRouter.HandleFunc("/products/{id:[0-9]+}", ph.UpdateProducts)
 
-	// register the handler
-	sm.HandleFunc("/products/", ph.GetProducts)
-
-	// create a new server
+	// Instantiate server at port 9090 and invoke router instance
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      sm,
@@ -41,12 +42,11 @@ func main() {
 		WriteTimeout: 1 * time.Second,
 	}
 
-	// start the server
+	// Start the server.
 	go func() {
-		l.Println("Starting server on port 9090")
-
-		// listen on port and calls appropriate ServeHTTP
+		// Listen on port and direct inbound requests.
 		err := s.ListenAndServe()
+		l.Println("Starting server on port 9090")
 		if err != nil {
 			l.Fatal(err)
 		}
