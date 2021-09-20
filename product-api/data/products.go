@@ -29,6 +29,7 @@ func AddProduct(p *Product) {
 	productList = append(productList, p)
 }
 
+// UpdateProdict replaces the Product with the given id.
 func UpdateProduct(id int, p *Product) error {
 	_, pos, err := findProduct(id)
 	if err != nil {
