@@ -1,6 +1,6 @@
 # learn-go
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/daniel-covelli/learn-go)](https://goreportcard.com/report/github.com/daniel-covelli/learn-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/daniel-covelli/learn-go)](https://goreportcard.com/report/github.com/daniel-covelli/learn-go) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 This is a playground for learning microservices in GO.
 
