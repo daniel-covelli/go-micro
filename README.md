@@ -1,5 +1,7 @@
 # learn-go
 
+[![Go Report Card](https://goreportcard.com/badge/github.com/daniel-covelli/learn-go)](https://goreportcard.com/report/github.com/daniel-covelli/learn-go)
+
 This is a playground for learning microservices in GO.
 
 ```shell
