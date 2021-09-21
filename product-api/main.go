@@ -23,17 +23,24 @@ func main() {
 	// routes to be matched and dispatches a handler.
 	sm := mux.NewRouter()
 
-	// Register a Get route and create its subrouter
+	// Register a Get route and create its subrouter.
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
-	// Register products subroute and its associated handler
+	// Register products subroute and its associated handler.
 	getRouter.HandleFunc("/products", ph.GetProducts)
 
-	// Register a PUT route and create its subrouter
+	// Register a PUT route and create its subrouter.
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
-	// Register a products/:id subroute and its associated handler
+	// Register a products/:id subroute and its associated handler.
 	putRouter.HandleFunc("/products/{id:[0-9]+}", ph.UpdateProducts)
+	putRouter.Use(ph.MiddlewareValidateProduct)
 
-	// Instantiate server at port 9090 and invoke router instance
+	// Register a POST route and create its subrouter.
+	postRouter := sm.Methods(http.MethodPost).Subrouter()
+	// Register a products/:id subroute and its associated handler.
+	postRouter.HandleFunc("/products", ph.AddProduct)
+	postRouter.Use(ph.MiddlewareValidateProduct)
+
+	// Instantiate server at port 9090 and invoke router instance.
 	s := &http.Server{
 		Addr:         ":9090",
 		Handler:      sm,
