@@ -19,6 +19,10 @@ type Product struct {
 	DeletedOn   string  `json:"-"`
 }
 
+func (p *Product) Validate() error {
+	return nil
+}
+
 func (p *Product) FromJSON(r io.Reader) error {
 	e := json.NewDecoder(r)
 	return e.Decode(p)
@@ -29,6 +33,7 @@ func AddProduct(p *Product) {
 	productList = append(productList, p)
 }
 
+// UpdateProdict replaces the Product with the given id.
 func UpdateProduct(id int, p *Product) error {
 	_, pos, err := findProduct(id)
 	if err != nil {
