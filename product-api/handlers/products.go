@@ -38,6 +38,16 @@ func NewProducts(l *log.Logger) *Products {
 
 // swagger:route GET /products products listProducts
 // Returns a list of products
+// responses:
+// 	200: productsResponse
+
+// A list of prroducts returns on the the response
+// swagger:response productResponse
+type productsResponseWrapper struct {
+	// All products in the system
+	// in: body
+	Body []data.Product
+}
 
 // GetProducts returns the products from the data store.
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
