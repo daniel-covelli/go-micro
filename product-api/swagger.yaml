@@ -34,7 +34,7 @@ info:
 paths:
   /products:
     get:
-      description: Returns a list of products
+      description: Returns a list of products from the data base
       operationId: listProducts
       responses:
         "200":
@@ -44,8 +44,8 @@ paths:
 produces:
 - application/json
 responses:
-  productResponse:
-    description: A list of prroducts returns on the the response
+  productsResponse:
+    description: A list of products returns on the the response
     schema:
       items:
         $ref: '#/definitions/Product'

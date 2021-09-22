@@ -2,15 +2,15 @@
 //
 // Documentation for Product API
 //
-// Schemes: http
-// BasePath: /
-// Version: 1.0.0
+// 		Schemes: http
+// 		BasePath: /
+// 		Version: 1.0.0
 //
-// Consumes:
-// - application/json
+// 		Consumes:
+// 		- application/json
 //
-// Produces:
-// - application/json
+// 		Produces:
+// 		- application/json
 //
 // swagger:meta
 package handlers
@@ -36,20 +36,20 @@ func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
 
-// swagger:route GET /products products listProducts
-// Returns a list of products
-// responses:
-// 	200: productsResponse
-
-// A list of prroducts returns on the the response
-// swagger:response productResponse
+// A list of products returns on the the response
+// swagger:response productsResponse
 type productsResponseWrapper struct {
 	// All products in the system
 	// in: body
 	Body []data.Product
 }
 
-// GetProducts returns the products from the data store.
+// swagger:route GET /products products listProducts
+// Returns a list of products from the data base
+// responses:
+// 		200: productsResponse
+
+// GetProducts handles GET requests and returns all current products.
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET Products")
 
@@ -61,6 +61,34 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(rw, "Unable to marshal json", http.StatusInternalServerError)
+	}
+}
+
+// DeleteProduct deletes a product from the data store.
+func (p *Products) DeleteProduct(rw http.ResponseWriter, r *http.Request) {
+	// Returns route variables as a map.
+	vars := mux.Vars(r)
+
+	// Get id from route variables.
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert id", http.StatusBadRequest)
+		return
+	}
+
+	p.l.Println("Handle DELETE Products", id)
+
+	err = data.DeleteProduct(id)
+
+	if err == data.ErrProductNotFound {
+		p.l.Println("%s", err)
+		http.Error(rw, "Product not found", http.StatusNotFound)
+		return
+	}
+
+	if err != nil {
+		http.Error(rw, "Product not found", http.StatusInternalServerError)
+		return
 	}
 }
 
