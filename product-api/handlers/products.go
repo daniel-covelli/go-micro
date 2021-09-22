@@ -21,7 +21,12 @@ func NewProducts(l *log.Logger) *Products {
 	return &Products{l}
 }
 
-// GetProducts returns the products from the data store.
+// swagger:route GET /products products listProducts
+// Returns a list of products from the data base
+// responses:
+// 		200: productsResponse
+
+// GetProducts handles GET requests and returns all current products.
 func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle GET Products")
 
@@ -36,14 +41,62 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// swagger:route DELETE /products/{id} products deleteProduct
+// Returns a list of products from the data base
+// responses:
+// 		201: noContent
+
+// DeleteProduct deletes a product from the data store.
+func (p *Products) DeleteProduct(rw http.ResponseWriter, r *http.Request) {
+	// Returns route variables as a map.
+	vars := mux.Vars(r)
+
+	// Get id from route variables.
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert id", http.StatusBadRequest)
+		return
+	}
+
+	p.l.Println("Handle DELETE Products", id)
+
+	err = data.DeleteProduct(id)
+
+	if err == data.ErrProductNotFound {
+		http.Error(rw, "Product not found", http.StatusNotFound)
+		return
+	}
+
+	if err != nil {
+		http.Error(rw, "Product not found", http.StatusInternalServerError)
+		return
+	}
+}
+
+// swagger:route POST /products products createProduct
+// Create a new product
+//
+// responses:
+//		200: productResponse
+//  	422: errorValidation
+//  	501: errorResponse
+
 // AddProduct adds a product to the data store.
 func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	p.l.Println("Handle POST Product")
 
 	prod := r.Context().Value(KeyProduct{}).(data.Product)
 
-	data.AddProduct(&prod)
+	data.AddProduct(prod)
 }
+
+// swagger:route PUT /products products updateProduct
+// Update a products details
+//
+// responses:
+//		201: noContent
+//  	404: errorResponse
+//  	422: errorValidation
 
 // UpdateProducts replaces the Product with a matching id.
 func (p Products) UpdateProducts(rw http.ResponseWriter, r *http.Request) {
