@@ -132,8 +132,27 @@ func (p *Products) ToJSON(w io.Writer) error {
 	return e.Encode(p)
 }
 
+// ToJSON serializes the given interface into a string based JSON format
+func ToJSONInterface(i interface{}, w io.Writer) error {
+	e := json.NewEncoder(w)
+
+	return e.Encode(i)
+}
+
 func GetProducts() Products {
 	return productList
+}
+
+// GetProductByID returns a single product which matches the id from the
+// database.
+// If a product is not found this function returns a ProductNotFound error
+func GetProductByID(id int) (*Product, error) {
+	_, pos, err := findProduct(id)
+	if err != nil {
+		return nil, ErrProductNotFound
+	}
+
+	return productList[pos], nil
 }
 
 var productList = []*Product{

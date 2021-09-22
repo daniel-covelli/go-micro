@@ -28,6 +28,7 @@ func main() {
 	getRouter := sm.Methods(http.MethodGet).Subrouter()
 	// Register products subroute and its associated handler.
 	getRouter.HandleFunc("/products", ph.GetProducts)
+	getRouter.HandleFunc("/products/{id:[0-9]+}", ph.GetProduct)
 
 	// PUT route and create its subrouter.
 	putRouter := sm.Methods(http.MethodPut).Subrouter()
