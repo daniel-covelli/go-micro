@@ -7,8 +7,8 @@ import (
 	"os"
 	"os/signal"
 	"time"
-	"working/handlers"
 
+	"github.com/daniel-covelli/learn-go/product-api/handlers"
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 )

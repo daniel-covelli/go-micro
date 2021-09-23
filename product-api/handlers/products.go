@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"working/data"
 
+	"github.com/daniel-covelli/learn-go/product-api/data"
 	"github.com/gorilla/mux"
 )
 
