@@ -15,7 +15,7 @@
 // swagger:meta
 package handlers
 
-import "working/data"
+import "github.com/daniel-covelli/learn-go/product-api/data"
 
 //
 // NOTE: Types defined here are purely for documentation purposes
@@ -71,13 +71,21 @@ type productIDParameterWrapper struct {
 	ID int `json:"id"`
 }
 
-// swagger:parameters updateProduct
+// swagger:parameters listSingleProduct deleteProduct updateProduct
 type productIDParamsWrapper struct {
 	// The id of the product for which the operation relates
 	// in: path
 	// required: true
 	ID int `json:"id"`
 }
+
+// // swagger:parameters listSingleProduct
+// type productIDGetProductWrapper struct {
+// 	// The id of the product for which the operation relates
+// 	// in: path
+// 	// required: true
+// 	ID int `json:"id"`
+// }
 
 // No response
 // swagger:response noContent

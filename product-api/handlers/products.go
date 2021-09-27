@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"working/data"
 
+	"github.com/daniel-covelli/learn-go/product-api/data"
 	"github.com/gorilla/mux"
 )
 
@@ -38,6 +38,52 @@ func (p *Products) GetProducts(rw http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		http.Error(rw, "Unable to marshal json", http.StatusInternalServerError)
+	}
+}
+
+// swagger:route GET /products/{id} products listSingleProduct
+// Returns the product with a given id
+// responses:
+// 		200: productResponse
+// 		404: errorResponse
+
+// GetProduct handles GET requests and returns a product.
+func (p *Products) GetProduct(rw http.ResponseWriter, r *http.Request) {
+	// Returns route variables as a map.
+	vars := mux.Vars(r)
+
+	// Get id from route variables.
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(rw, "Unable to convert id", http.StatusBadRequest)
+		return
+	}
+
+	p.l.Println("Handle GET Products", id)
+
+	prod, err := data.GetProductByID(id)
+
+	switch err {
+	case nil:
+
+	case data.ErrProductNotFound:
+		p.l.Println("[ERROR] fetching product", err)
+
+		rw.WriteHeader(http.StatusNotFound)
+		data.ToJSONInterface(&GenericError{Message: err.Error()}, rw)
+		return
+	default:
+		p.l.Println("[ERROR] fetching product", err)
+
+		rw.WriteHeader(http.StatusInternalServerError)
+		data.ToJSONInterface(&GenericError{Message: err.Error()}, rw)
+		return
+	}
+
+	err = data.ToJSONInterface(prod, rw)
+	if err != nil {
+		// we should never be here but log the error just incase
+		p.l.Println("[ERROR] serializing product", err)
 	}
 }
 
@@ -90,7 +136,7 @@ func (p *Products) AddProduct(rw http.ResponseWriter, r *http.Request) {
 	data.AddProduct(prod)
 }
 
-// swagger:route PUT /products products updateProduct
+// swagger:route PUT /products/{id} products updateProduct
 // Update a products details
 //
 // responses:
